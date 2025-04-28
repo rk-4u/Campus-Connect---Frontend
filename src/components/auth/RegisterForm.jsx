@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../services/authService';
 
-const RegisterForm = ({ role }) => {
+const RegisterForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('student'); // Default to student
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -21,15 +22,15 @@ const RegisterForm = ({ role }) => {
     try {
       const userData = { name, email, password, role };
       await registerUser(userData);
-      navigate(`/login/${role}`); // Redirect to login page for the selected role
-    } catch (err) {
-      setError(err);
+      navigate(`/login/${role}`);
+    } catch (error) {
+      setError(error.message || "Registration failed. Please try again.");
     }
   };
 
   return (
     <div className="w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-semibold text-center mb-6">Register as {role}</h2>
+      <h2 className="text-2xl font-semibold text-center mb-6">Register</h2>
       {error && <p className="text-red-500 text-center mb-4">{error}</p>}
       <form onSubmit={handleRegister} className="space-y-4">
         <div>
@@ -76,15 +77,29 @@ const RegisterForm = ({ role }) => {
             required
           />
         </div>
+        <div>
+          <label htmlFor="role" className="block text-sm font-medium text-gray-700">Register As</label>
+          <select
+            id="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-md"
+            required
+          >
+            <option value="student">Student</option>
+            <option value="company">Company</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
         <button
           type="submit"
-          className="w-full py-2 bg-blue-600 text-white rounded-md"
+          className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
         >
           Register
         </button>
       </form>
       <div className="mt-4 text-center">
-        <p>Already have an account? <a href={`/login/${role}`} className="text-blue-600">Login here</a></p>
+        <p>Already have an account? <a href="/login" className="text-blue-600 hover:underline">Login here</a></p>
       </div>
     </div>
   );
