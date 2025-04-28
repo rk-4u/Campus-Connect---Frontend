@@ -1,19 +1,22 @@
 import React, { Suspense } from 'react';
+import { Outlet } from 'react-router-dom'; // ✅ Import Outlet
 import Navbar from '../common/Navbar';
 import Sidebar from '../common/Sidebar';
 import Footer from '../common/Footer';
+import LoadingSpinner from '../common/LoadingSpinner';
 import ProtectedRoute from '../common/ProtectedRoute'; // Import ProtectedRoute
-import LoadingSpinner from '../common/LoadingSpinner'; // Import LoadingSpinner
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = () => {
   return (
     <div className="layout-container">
       <Navbar />
-      <div className="dashboard-content">
+      <div className="dashboard-content flex">
         <Sidebar />
-        <div className="main-content">
+        <div className="main-content flex-1 p-6">
           <Suspense fallback={<LoadingSpinner />}>
-            <ProtectedRoute>{children}</ProtectedRoute> {/* Wrap the children with ProtectedRoute */}
+            <ProtectedRoute>
+              <Outlet /> {/* ✅ Use Outlet instead of children */}
+            </ProtectedRoute>
           </Suspense>
         </div>
       </div>
