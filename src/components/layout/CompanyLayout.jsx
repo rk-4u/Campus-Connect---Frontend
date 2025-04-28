@@ -1,21 +1,20 @@
-import React, { Suspense } from 'react';
-import Navbar from '../common/Navbar';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from '../common/Sidebar';
+import Navbar from '../common/Navbar';
 import Footer from '../common/Footer';
-import ProtectedRoute from '../common/ProtectedRoute'; // Import ProtectedRoute
-import LoadingSpinner from '../common/LoadingSpinner'; // Import LoadingSpinner
 
-const CompanyLayout = ({ children }) => {
+const CompanyLayout = () => {
   return (
-    <div className="layout-container">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
-      <div className="dashboard-content">
+      <div className="flex flex-1">
         <Sidebar />
-        <div className="main-content">
-          <Suspense fallback={<LoadingSpinner />}>
-            <ProtectedRoute>{children}</ProtectedRoute> {/* Wrap the children with ProtectedRoute */}
-          </Suspense>
-        </div>
+        <main className="flex-1 overflow-auto p-4 md:p-8">
+          <div className="max-w-7xl mx-auto">
+            <Outlet /> {/* This renders the CompanyDashboard */}
+          </div>
+        </main>
       </div>
       <Footer />
     </div>
