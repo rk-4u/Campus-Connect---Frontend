@@ -11,14 +11,12 @@ const JobPostForm = () => {
     title: '',
     description: '',
     requirements: '',
-    skills: '',
     location: '',
-    type: 'full-time',
     salaryMin: '',
     salaryMax: '',
-    salaryCurrency: 'USD',
-    applicationDeadline: ''
+    salaryCurrency: 'INR',  // Default as INR based on your API example
   });
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,6 +31,9 @@ const JobPostForm = () => {
     setError('');
     setSuccess('');
     setLoading(true);
+    console.log('User:', user);
+    console.log('Token:', token);
+
 
     // Check for session
     if (!user || !token) {
@@ -46,17 +47,13 @@ const JobPostForm = () => {
       const jobData = {
         title: formData.title.trim(),
         description: formData.description.trim(),
-        company: user._id, // Assuming you are saving company id
         requirements: formData.requirements.split(',').map(item => item.trim()).filter(Boolean),
-        skillsRequired: formData.skills.split(',').map(item => item.trim()).filter(Boolean),
         location: formData.location.trim(),
-        type: formData.type,
         salary: {
           min: Number(formData.salaryMin) || 0,
           max: Number(formData.salaryMax) || 0,
           currency: formData.salaryCurrency
-        },
-        applicationDeadline: formData.applicationDeadline ? new Date(formData.applicationDeadline) : null
+        }
       };
 
       console.log('Posting job:', jobData);
@@ -68,13 +65,10 @@ const JobPostForm = () => {
         title: '',
         description: '',
         requirements: '',
-        skills: '',
         location: '',
-        type: 'full-time',
         salaryMin: '',
         salaryMax: '',
-        salaryCurrency: 'USD',
-        applicationDeadline: ''
+        salaryCurrency: 'INR',
       });
     } catch (err) {
       console.error('Error posting job:', err);
@@ -92,7 +86,7 @@ const JobPostForm = () => {
       {success && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">{success}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        
+
         {/* Title */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Job Title *</label>
@@ -132,18 +126,6 @@ const JobPostForm = () => {
           />
         </div>
 
-        {/* Skills */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Skills Required (comma separated)</label>
-          <input
-            type="text"
-            name="skills"
-            value={formData.skills}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
         {/* Location */}
         <div>
           <label className="block text-sm font-medium text-gray-700">Location *</label>
@@ -155,22 +137,6 @@ const JobPostForm = () => {
             className="w-full p-2 border rounded"
             required
           />
-        </div>
-
-        {/* Job Type */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Job Type *</label>
-          <select
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-            required
-          >
-            <option value="full-time">Full-time</option>
-            <option value="part-time">Part-time</option>
-            <option value="internship">Internship</option>
-          </select>
         </div>
 
         {/* Salary */}
@@ -205,23 +171,11 @@ const JobPostForm = () => {
               onChange={handleChange}
               className="w-full p-2 border rounded"
             >
-              <option value="USD">USD</option>
               <option value="INR">INR</option>
+              <option value="USD">USD</option>
               <option value="EUR">EUR</option>
             </select>
           </div>
-        </div>
-
-        {/* Application Deadline */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Application Deadline</label>
-          <input
-            type="date"
-            name="applicationDeadline"
-            value={formData.applicationDeadline}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
         </div>
 
         {/* Submit */}
@@ -238,4 +192,3 @@ const JobPostForm = () => {
 };
 
 export default JobPostForm;
-
