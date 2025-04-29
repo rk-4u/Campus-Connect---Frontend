@@ -1,3 +1,4 @@
+// src/App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -14,6 +15,7 @@ import RegisterPage from './pages/auth/RegisterPage';
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import PlacementStats from './components/admin/PlacementStats';
+import PlacementDrives from './components/admin/PlacementDrives'; // Import the new page
 
 // Company Pages
 import CompanyDashboard from './pages/company/CompanyDashboard';
@@ -53,9 +55,9 @@ const App = () => {
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="stats" element={<PlacementStats />} />
-            {/* Removed PlacementDrives route since component doesn't exist */}
+            <Route path="drives" element={<PlacementDrives />} /> {/* Route for Placement Drives */}
           </Route>
-          
+
           {/* Company Routes */}
           <Route path="/company" element={
             <ProtectedRoute requiredRole="company">

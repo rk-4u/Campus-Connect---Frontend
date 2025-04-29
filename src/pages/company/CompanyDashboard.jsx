@@ -8,22 +8,30 @@ const CompanyDashboard = () => {
   const [jobs, setJobs] = useState([]);
   const location = useLocation();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);  // New state for error handling
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
       if (!token) {
         setError('You are not authorized. Please log in again.');
         setLoading(false);
-        return;  // Exit early if there's no token
+        return;
       }
 
       try {
-        console.log('Fetching jobs with token:', token); // Log the token for debugging
-        const response = await axios.get('https://clg-placementproject-backend.onrender.com/api/company/jobs', {
+        console.log('Fetching jobs with token:', token);
+        const response = await axios.get('http://localhost:5000/api/company/jobs', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setJobs(response.data);
+        console.log('Fetched jobs response:', response.data);
+
+        const jobsData = response.data?.data;
+        if (Array.isArray(jobsData)) {
+          setJobs(jobsData);
+        } else {
+          setJobs([]);  // fallback to empty list instead of throwing error
+        }
+
       } catch (err) {
         if (err.response && err.response.status === 401) {
           setError('Session expired. Please log in again.');
@@ -38,7 +46,6 @@ const CompanyDashboard = () => {
     fetchJobs();
   }, [token]);
 
-  // Check if we're on the main dashboard route
   const isDashboard = location.pathname === '/company/dashboard';
 
   return (
@@ -46,7 +53,7 @@ const CompanyDashboard = () => {
       {isDashboard && (
         <div className="dashboard-content">
           <h1 className="text-2xl font-bold mb-6">Company Dashboard</h1>
-          
+
           {/* Stats Overview */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-white p-4 rounded shadow">
@@ -73,7 +80,7 @@ const CompanyDashboard = () => {
             {loading ? (
               <div className="p-4">Loading jobs...</div>
             ) : error ? (
-              <div className="p-4 text-red-500">{error}</div>  // Show the error message
+              <div className="p-4 text-red-500">{error}</div>
             ) : jobs.length === 0 ? (
               <div className="p-4 text-gray-500">No jobs posted yet</div>
             ) : (
@@ -104,4 +111,3 @@ const CompanyDashboard = () => {
 };
 
 export default CompanyDashboard;
-

@@ -1,3 +1,4 @@
+// src/components/layout/Sidebar.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -16,13 +17,13 @@ const Sidebar = () => {
     company: [
       { label: 'Dashboard', path: '/company/dashboard' },
       { label: 'Post Job', path: '/company/post-job' },
-      { label: 'Jobs', path: '/company/jobs' }, // ✅ new link to show job list
+      { label: 'Jobs', path: '/company/jobs' },
       { label: 'Schedule Interview', path: '/company/schedule-interview' },
     ],    
     admin: [
       { label: 'Dashboard', path: '/admin/dashboard' },
       { label: 'Placement Stats', path: '/admin/stats' },
-      { label: 'Placement Drives', path: '/admin/drives' },
+      { label: 'Placement Drives', path: '/admin/drives' }, // Correct path to the drives page
     ],
   };
 

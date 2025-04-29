@@ -11,7 +11,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get('https://clg-placementproject-backend.onrender.com/api/admin/stats', {
+        const response = await axios.get('http://localhost:5000/api/admin/stats', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setStats(response.data);
