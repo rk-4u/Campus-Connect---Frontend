@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://clg-placementproject-backend.onrender.com/api';
+const API_URL = 'http://localhost:5000/api';
+
 
 // Function to get authentication configuration with token
 const getAuthConfig = (token) => {

@@ -1,4 +1,3 @@
-// src/components/student/JobsList.jsx
 import React, { useEffect, useState } from 'react';
 import { getAllJobs } from '../../services/studentService';
 import JobCard from '../common/JobCard';
@@ -26,7 +25,7 @@ const JobsList = () => {
         <p>No jobs available.</p>
       ) : (
         jobs.map((job) => (
-          <JobCard key={job.id} job={job} />
+          <JobCard key={job._id} job={job} />
         ))
       )}
     </div>

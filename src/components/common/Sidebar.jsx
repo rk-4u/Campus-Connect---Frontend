@@ -16,9 +16,9 @@ const Sidebar = () => {
     company: [
       { label: 'Dashboard', path: '/company/dashboard' },
       { label: 'Post Job', path: '/company/post-job' },
-      { label: 'Applicants', path: '/company/applicants' },
+      { label: 'Jobs', path: '/company/jobs' }, // ✅ new link to show job list
       { label: 'Schedule Interview', path: '/company/schedule-interview' },
-    ],
+    ],    
     admin: [
       { label: 'Dashboard', path: '/admin/dashboard' },
       { label: 'Placement Stats', path: '/admin/stats' },

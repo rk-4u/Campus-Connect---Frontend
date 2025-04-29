@@ -18,6 +18,7 @@ import PlacementStats from './components/admin/PlacementStats';
 // Company Pages
 import CompanyDashboard from './pages/company/CompanyDashboard';
 import JobPostForm from './components/company/JobPostForm';
+import CompanyJobsList from './components/company/CompanyJobsList';
 import ApplicantsList from './components/company/ApplicantsList';
 import ScheduleInterview from './components/company/ScheduleInterview';
 
@@ -64,6 +65,7 @@ const App = () => {
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<CompanyDashboard />} />
             <Route path="post-job" element={<JobPostForm />} />
+            <Route path="jobs" element={<CompanyJobsList />} />
             <Route path="jobs/:jobId/applicants" element={<ApplicantsList />} />
             <Route path="schedule-interview" element={<ScheduleInterview />} />
           </Route>
