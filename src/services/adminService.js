@@ -14,9 +14,12 @@ export const createPlacementDrive = async (driveData, token) => {
     });
     return response.data;
   } catch (error) {
-    throw error.response?.data || error.message;
+    const message =
+      error.response?.data?.message || error.response?.data?.error || error.message;
+    throw new Error(message);
   }
 };
+
 
 // Fetching Placement Drives
 export const getPlacementDrives = async (token) => { // Accepting the token here

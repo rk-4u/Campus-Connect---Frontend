@@ -17,13 +17,14 @@ const Sidebar = () => {
       { label: 'Dashboard', path: '/company/dashboard' },
       { label: 'Post Job', path: '/company/post-job' },
       { label: 'Jobs', path: '/company/jobs' },
-      { label: 'Schedule Interview', path: '/company/schedule-interview' },
     ],    
     admin: [
       { label: 'Dashboard', path: '/admin/dashboard' },
       { label: 'Placement Stats', path: '/admin/stats' },
-      { label: 'Placement Drives', path: '/admin/drives' }, // Correct path to the drives page
+      { label: 'Placement Drives', path: '/admin/drives' },
+      { label: 'Create Drive', path: '/admin/drives/create' }, // ✅ Optional shortcut
     ],
+    
   };
 
   return (

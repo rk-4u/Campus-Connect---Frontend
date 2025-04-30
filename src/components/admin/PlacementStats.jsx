@@ -11,7 +11,6 @@ const PlacementStats = () => {
     const fetchStats = async () => {
       try {
         const data = await getPlacementStats(token);
-        console.log('Fetched stats:', data);  // Debug log
         setStats(data ?? {}); // Ensure stats is always an object
       } catch (error) {
         alert('Error fetching stats: ' + error.message);

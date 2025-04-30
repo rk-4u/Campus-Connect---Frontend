@@ -2,56 +2,43 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
-
-// Function to get authentication configuration with token
+// Get auth headers
 const getAuthConfig = (token) => {
   if (!token) {
-    console.warn('No authentication token available');
-    throw new Error('Your session has expired. Please login again.');
+    throw new Error('Session expired. Please login again.');
   }
-  
+
   return {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
-    timeout: 10000
+    timeout: 10000,
   };
 };
 
-// Centralized error handling
+// Centralized error handler
 const handleApiError = (error) => {
   console.error('API Error:', error);
-  
+
   if (error.response) {
-    // Response received, but the server returned an error status
-    console.error('Response data:', error.response.data);
-    console.error('Response status:', error.response.status);
-    console.error('Response headers:', error.response.headers);
-    
     if (error.response.status === 401) {
       throw new Error('Session expired. Please login again.');
     }
-
-    throw new Error(error.response?.data?.message || 'An unexpected error occurred. Please try again later.');
+    throw new Error(error.response?.data?.error || 'Unexpected server error');
   } else if (error.request) {
-    // Request was made but no response received
-    console.error('Request data:', error.request);
-    throw new Error('No response from server. Please check your internet connection or try again later.');
+    throw new Error('No response from server. Please check your network.');
   } else {
-    // Something else went wrong
-    console.error('Error message:', error.message);
-    throw new Error('An unexpected error occurred. Please try again later.');
+    throw new Error(error.message || 'Unexpected error occurred.');
   }
 };
 
 // ✅ POST /api/company/jobs - Post a new job
 export const postJob = async (jobData, token) => {
   try {
-    console.log('Attempting to post job with token:', token ? 'exists' : 'missing');
     const response = await axios.post(
-      `${API_URL}/company/jobs`, 
-      jobData, 
+      `${API_URL}/company/jobs`,
+      jobData,
       getAuthConfig(token)
     );
     return response.data;
@@ -64,11 +51,6 @@ export const postJob = async (jobData, token) => {
 // ✅ GET /api/company/jobs - Get company's jobs
 export const getCompanyJobs = async (token) => {
   try {
-    if (!token) {
-      console.warn('No authentication token found.');
-      throw new Error('Session expired. Please login again.');
-    }
-
     const response = await axios.get(
       `${API_URL}/company/jobs`,
       getAuthConfig(token)
@@ -79,7 +61,7 @@ export const getCompanyJobs = async (token) => {
   }
 };
 
-
+// ✅ GET /api/company/jobs/:jobId/applicants - View applicants for a job
 export const viewApplicants = async (jobId, token) => {
   try {
     const response = await axios.get(
@@ -87,42 +69,44 @@ export const viewApplicants = async (jobId, token) => {
       getAuthConfig(token)
     );
 
-    // Directly return the array of applicants
     return response.data || [];
   } catch (error) {
-    handleApiError(error); // Centralized error handling
-    return []; // Return an empty array on error to avoid breaking the component
+    handleApiError(error);
+    return []; // fallback in case of error
   }
 };
 
-
-// ✅ POST /api/interviews/schedule - Schedule an interview
-export const scheduleInterview = async (interviewData, token) => {
+// ✅ Check if an interview is already scheduled
+export const checkInterviewScheduled = async (applicationId, token) => {
   try {
-    if (!token) {
-      console.warn('No authentication token found.');
-      throw new Error('Session expired. Please login again.');
-    }
-
-    const response = await axios.post(
-      `${API_URL}/interviews/schedule`, 
-      interviewData, 
+    const res = await axios.get(
+      `${API_URL}/interviews/check/${applicationId}`,
       getAuthConfig(token)
     );
-    return response.data;
+    return res.data;
   } catch (error) {
-    handleApiError(error); // Centralized error handling
+    handleApiError(error);
+  }
+};
+
+// ✅ Schedule a new interview
+export const scheduleInterview = async (interviewData, token) => {
+  try {
+    const res = await axios.post(
+      `${API_URL}/interviews/`,
+      interviewData,
+      getAuthConfig(token)
+    );
+    return res.data;
+  } catch (error) {
+    handleApiError(error);
+    throw error; // rethrow for UI-level handling
   }
 };
 
 // ✅ GET /api/interviews - Get interviews for the logged-in company
 export const getCompanyInterviews = async (token) => {
   try {
-    if (!token) {
-      console.warn('No authentication token found.');
-      throw new Error('Session expired. Please login again.');
-    }
-
     const response = await axios.get(
       `${API_URL}/interviews`,
       getAuthConfig(token)
@@ -136,11 +120,6 @@ export const getCompanyInterviews = async (token) => {
 // ✅ GET /api/company/stats - Get company statistics
 export const getCompanyStats = async (token) => {
   try {
-    if (!token) {
-      console.warn('No authentication token found.');
-      throw new Error('Session expired. Please login again.');
-    }
-
     const response = await axios.get(
       `${API_URL}/company/stats`,
       getAuthConfig(token)
