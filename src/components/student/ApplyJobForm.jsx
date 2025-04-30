@@ -30,12 +30,13 @@ const ApplyJobForm = () => {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // Ensure token exists
           },
         }
       );
+      
       setSuccess('Applied successfully!');
-      setTimeout(() => navigate('/student/applications'), 1500);
+      setTimeout(() => navigate('/student/jobs'), 1500);
     } catch (err) {
       console.error('Apply error:', err);
       setError(err?.response?.data?.error || 'You may have already applied or an error occurred.');

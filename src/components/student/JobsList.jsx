@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { getAllJobs } from '../../services/studentService';
+import { getAllJobs, getMyApplications } from '../../services/studentService';
 import JobCard from '../common/JobCard';
 
 const JobsList = () => {
   const [jobs, setJobs] = useState([]);
+  const [appliedJobIds, setAppliedJobIds] = useState(new Set());
 
   useEffect(() => {
-    // Fetch all jobs available for students
-    const fetchJobs = async () => {
+    const fetchData = async () => {
       try {
-        const response = await getAllJobs();
-        setJobs(response);
+        const [jobsData, applicationsData] = await Promise.all([
+          getAllJobs(),
+          getMyApplications()
+        ]);
+        setJobs(jobsData);
+
+        // Extract job IDs from applications and store in a Set for fast lookup
+        const appliedIds = new Set(applicationsData.map(app => app.job._id));
+        setAppliedJobIds(appliedIds);
       } catch (error) {
-        console.error('Error fetching jobs:', error);
+        console.error('Error fetching data:', error);
       }
     };
-    fetchJobs();
+    fetchData();
   }, []);
 
   return (
@@ -25,7 +32,7 @@ const JobsList = () => {
         <p>No jobs available.</p>
       ) : (
         jobs.map((job) => (
-          <JobCard key={job._id} job={job} />
+          <JobCard key={job._id} job={job} alreadyApplied={appliedJobIds.has(job._id)} />
         ))
       )}
     </div>

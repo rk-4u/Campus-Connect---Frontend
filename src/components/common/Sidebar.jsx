@@ -12,7 +12,6 @@ const Sidebar = () => {
     student: [
       { label: 'Dashboard', path: '/student/dashboard' },
       { label: 'Jobs', path: '/student/jobs' },
-      { label: 'My Applications', path: '/student/applications' },
     ],
     company: [
       { label: 'Dashboard', path: '/company/dashboard' },
