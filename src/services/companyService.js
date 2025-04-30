@@ -79,23 +79,22 @@ export const getCompanyJobs = async (token) => {
   }
 };
 
-// ✅ GET /api/company/jobs/:jobId/applicants - View applicants for a job
+
 export const viewApplicants = async (jobId, token) => {
   try {
-    if (!token) {
-      console.warn('No authentication token found.');
-      throw new Error('Session expired. Please login again.');
-    }
-
     const response = await axios.get(
       `${API_URL}/company/jobs/${jobId}/applicants`,
       getAuthConfig(token)
     );
-    return response.data;
+
+    // Directly return the array of applicants
+    return response.data || [];
   } catch (error) {
     handleApiError(error); // Centralized error handling
+    return []; // Return an empty array on error to avoid breaking the component
   }
 };
+
 
 // ✅ POST /api/interviews/schedule - Schedule an interview
 export const scheduleInterview = async (interviewData, token) => {

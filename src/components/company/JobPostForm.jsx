@@ -31,8 +31,6 @@ const JobPostForm = () => {
     setError('');
     setSuccess('');
     setLoading(true);
-    console.log('User:', user);
-    console.log('Token:', token);
 
 
     // Check for session
@@ -56,7 +54,6 @@ const JobPostForm = () => {
         }
       };
 
-      console.log('Posting job:', jobData);
 
       await postJob(jobData, token);
 
@@ -71,7 +68,6 @@ const JobPostForm = () => {
         salaryCurrency: 'INR',
       });
     } catch (err) {
-      console.error('Error posting job:', err);
       setError(err.message || 'Failed to post job. Please try again.');
     } finally {
       setLoading(false);

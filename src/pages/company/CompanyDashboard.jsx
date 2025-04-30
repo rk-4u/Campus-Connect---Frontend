@@ -19,19 +19,16 @@ const CompanyDashboard = () => {
       }
 
       try {
-        console.log('Fetching jobs with token:', token);
         const response = await axios.get('http://localhost:5000/api/company/jobs', {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log('Fetched jobs response:', response.data);
 
         const jobsData = response.data?.data;
         if (Array.isArray(jobsData)) {
           setJobs(jobsData);
         } else {
-          setJobs([]);  // fallback to empty list instead of throwing error
+          setJobs([]);
         }
-
       } catch (err) {
         if (err.response && err.response.status === 401) {
           setError('Session expired. Please log in again.');
@@ -63,7 +60,7 @@ const CompanyDashboard = () => {
             <div className="bg-white p-4 rounded shadow">
               <h3 className="text-gray-500">Total Applicants</h3>
               <p className="text-2xl font-bold">
-                {jobs.reduce((sum, job) => sum + (job.applicants?.length || 0), 0)}
+                {jobs.reduce((sum, job) => sum + (job.applicantsCount || 0), 0)}
               </p>
             </div>
             <div className="bg-white p-4 rounded shadow">
@@ -90,7 +87,9 @@ const CompanyDashboard = () => {
                     <div className="flex justify-between items-center">
                       <div>
                         <h3 className="font-medium">{job.title}</h3>
-                        <p className="text-sm text-gray-500">{job.location}</p>
+                        <p className="text-sm text-gray-500">
+                          {job.location} • {job.applicantsCount} applicants
+                        </p>
                       </div>
                       <Link
                         to={`/company/jobs/${job._id}/applicants`}
