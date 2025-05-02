@@ -49,54 +49,61 @@ const StudentDashboard = () => {
           </div>
         </div>
 
-        {/* Jobs List */}
-        <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
-          <div className="p-4 border-b">
-            <h2 className="text-lg font-semibold">Available Jobs</h2>
+        {/* Flex Layout for Available Jobs and My Applications */}
+        <div className="flex flex-col md:flex-row gap-8">
+          
+          {/* Available Jobs Section */}
+          <div className="bg-white rounded-lg shadow overflow-hidden w-full md:w-1/2">
+            <div className="p-4 border-b">
+              <h2 className="text-lg font-semibold">Available Jobs</h2>
+            </div>
+            {loading ? (
+              <div className="p-4">Loading jobs...</div>
+            ) : error ? (
+              <div className="p-4 text-red-500">{error}</div>
+            ) : jobs.length === 0 ? (
+              <div className="p-4 text-gray-500">No jobs available right now.</div>
+            ) : (
+              <ul className="divide-y divide-gray-200">
+                {jobs.map((job) => (
+                  <li key={job._id} className="p-4 hover:bg-gray-50">
+                    <div>
+                      <h3 className="font-medium">{job.title}</h3>
+                      <p className="text-sm text-gray-500">{job.location || 'Location not specified'}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          {loading ? (
-            <div className="p-4">Loading jobs...</div>
-          ) : error ? (
-            <div className="p-4 text-red-500">{error}</div>
-          ) : jobs.length === 0 ? (
-            <div className="p-4 text-gray-500">No jobs available right now.</div>
-          ) : (
-            <ul className="divide-y divide-gray-200">
-              {jobs.map((job) => (
-                <li key={job._id} className="p-4 hover:bg-gray-50">
-                  <div>
-                    <h3 className="font-medium">{job.title}</h3>
-                    <p className="text-sm text-gray-500">{job.location || 'Location not specified'}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
 
-        {/* My Applications List */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="p-4 border-b">
-            <h2 className="text-lg font-semibold">My Applications</h2>
+          {/* My Applications Section */}
+          <div className="bg-white rounded-lg shadow overflow-hidden w-full md:w-1/2">
+            <div className="p-4 border-b">
+              <h2 className="text-lg font-semibold">My Applications</h2>
+            </div>
+            {loading ? (
+              <div className="p-4">Loading applications...</div>
+            ) : error ? (
+              <div className="p-4 text-red-500">{error}</div>
+            ) : applications.length === 0 ? (
+              <div className="p-4 text-gray-500">You haven't applied for any jobs yet.</div>
+            ) : (
+              <ul className="divide-y divide-gray-200">
+                {applications.map((application) => (
+                  <li key={application._id} className="p-4 hover:bg-gray-50">
+                    <div>
+                      <h3 className="font-medium">{application.job?.title}</h3>
+                      <p className="text-sm text-green-600">
+                        {`Already ${application.status || 'Pending...'}`}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          {loading ? (
-            <div className="p-4">Loading applications...</div>
-          ) : error ? (
-            <div className="p-4 text-red-500">{error}</div>
-          ) : applications.length === 0 ? (
-            <div className="p-4 text-gray-500">You haven't applied for any jobs yet.</div>
-          ) : (
-            <ul className="divide-y divide-gray-200">
-              {applications.map((application) => (
-                <li key={application._id} className="p-4 hover:bg-gray-50">
-                  <div>
-                    <h3 className="font-medium">{application.job?.title}</h3>
-                    <p className="text-sm text-gray-500">{application.job?.location || 'Location not specified'}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
+
         </div>
       </div>
     </div>

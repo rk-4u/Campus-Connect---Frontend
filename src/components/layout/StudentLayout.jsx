@@ -14,10 +14,11 @@ const StudentLayout = () => {
         <div className="main-content flex-1 p-6">
           <Suspense fallback={<LoadingSpinner />}>
             <Outlet /> 
+            <Footer />
           </Suspense>
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 };

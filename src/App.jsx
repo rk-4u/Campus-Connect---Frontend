@@ -6,9 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import { LoaderProvider } from "./context/LoaderContext"; // ✅ Add this
-import GlobalLoader from "./components/common/GlobalLoader"; // ✅ Add this
-import "./components/common/Loader.css"; // ✅ Import the loader CSS
+import { LoaderProvider } from "./context/LoaderContext";
 
 // Layout Components
 import AdminLayout from "./components/layout/AdminLayout";
@@ -37,6 +35,7 @@ import StudentDashboard from "./pages/student/StudentDashboard";
 import JobsList from "./components/student/JobsList";
 import MyApplications from "./components/student/MyApplications";
 import ApplyJobForm from "./components/student/ApplyJobForm";
+import PlaceDrives from "./components/student/PlaceDrives";
 
 // Common Components
 import ProtectedRoute from "./components/common/ProtectedRoute";
@@ -116,6 +115,7 @@ const App = () => {
               <Route path="jobs" element={<JobsList />} />
               <Route path="jobs/:jobId/apply" element={<ApplyJobForm />} />
               <Route path="applications" element={<MyApplications />} />
+              <Route path="drives" element={<PlaceDrives />} />
             </Route>
 
             {/* Fallback Routes */}
